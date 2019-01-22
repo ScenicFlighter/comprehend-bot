@@ -1,0 +1,27 @@
+service: comprehend-bot
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: v1
+  region: us-east-1
+
+functions:
+  bot_hook:
+    handler: handler.bot_hook
+    events:
+     - http:
+         path: bot/hook
+         method: post
+plugins:
+  - serverless-python-requirements
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+      - "dynamodb:*"
+      - "comprehend:*"
+      - "translate:*"
